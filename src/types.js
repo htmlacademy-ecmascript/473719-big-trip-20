@@ -37,6 +37,12 @@
  * @prop {boolean} isEditable
  */
 
+/**
+ * @typedef UrlParams
+ * @prop {string} [edit]
+ *
+ *
+ */
 
 /**
  * @typedef PointInSnakeCase

@@ -1,25 +1,38 @@
 import View from './view.js';
-import {html} from '../utils.js';
+import { html } from '../utils.js';
 
 /**
  * @extends {View<PointViewState>}
  */
 
 class CardView extends View {
+  constructor() {
+    super();
+    this.addEventListener('click', this.handleClick);
+  }
+
+  /**
+   *
+   * @param {MouseEvent & {target: Element}} event
+   */
+
+  handleClick(event) {
+    if (event.target.closest('.event__rollup-btn')) {
+      this.notify('open');
+    }
+  }
+
   /**
    * @override
    */
+
   createHtml() {
     return html`
       <div class="event">
-        ${this.createStartDateHtml()}
-        ${this.createIconHtml()}
-        ${this.createDestinationHtml()}
-        ${this.createScheduleHtml()}
-        ${this.createPriceHtml()}
-        ${this.createOffersHtml()}
-        ${this.createStarButtonHtml()}
-        ${this.createRollupButtonHtml()}
+        ${this.createStartDateHtml()} ${this.createIconHtml()}
+        ${this.createDestinationHtml()} ${this.createScheduleHtml()}
+        ${this.createPriceHtml()} ${this.createOffersHtml()}
+        ${this.createStarButtonHtml()} ${this.createRollupButtonHtml()}
       </div>
     `;
   }
@@ -31,7 +44,9 @@ class CardView extends View {
   createStartDateHtml() {
     const point = this.state;
     return html`
-      <time class="event__date" datetime="${point.startDateTime}">${point.startDate}</time>
+      <time class="event__date" datetime="${point.startDateTime}"
+        >${point.startDate}</time
+      >
     `;
   }
 
@@ -40,7 +55,13 @@ class CardView extends View {
     const type = point.types.find((it) => it.isSelected);
     return html`
       <div class="event__type">
-        <img class="event__type-icon" width="42" height="42" src="img/icons/${type.value}.png" alt="Event type icon">
+        <img
+          class="event__type-icon"
+          width="42"
+          height="42"
+          src="img/icons/${type.value}.png"
+          alt="Event type icon"
+        />
       </div>
     `;
   }
@@ -60,9 +81,13 @@ class CardView extends View {
     return html`
       <div class="event__schedule">
         <p class="event__time">
-          <time class="event__start-time" datetime="${point.startDateTime}">${point.startTime}</time>
+          <time class="event__start-time" datetime="${point.startDateTime}"
+            >${point.startTime}</time
+          >
           —
-          <time class="event__end-time" datetime="${point.endDateTime}">${point.endTime}</time>
+          <time class="event__end-time" datetime="${point.endDateTime}"
+            >${point.endTime}</time
+          >
         </p>
         <p class="event__duration">${point.duration}</p>
       </div>
@@ -89,13 +114,15 @@ class CardView extends View {
     return html`
       <h4 class="visually-hidden">Offers:</h4>
       <ul class="event__selected-offers">
-        ${offers.map((it) => html`
-          <li class="event__offer">
-            <span class="event__offer-title">${it.title}</span>
-            +€&nbsp;
-            <span class="event__offer-price">${it.price}</span>
-          </li>
-        `)}
+        ${offers.map(
+          (it) => html`
+            <li class="event__offer">
+              <span class="event__offer-title">${it.title}</span>
+              +€&nbsp;
+              <span class="event__offer-price">${it.price}</span>
+            </li>
+          `
+        )}
       </ul>
     `;
   }
@@ -104,10 +131,22 @@ class CardView extends View {
     const point = this.state;
 
     return html`
-      <button class="event__favorite-btn ${point.isFavorite ? 'event__favorite-btn--active' : ''}" type="button">
+      <button
+        class="event__favorite-btn ${point.isFavorite
+          ? 'event__favorite-btn--active'
+          : ''}"
+        type="button"
+      >
         <span class="visually-hidden">Add to favorite</span>
-        <svg class="event__favorite-icon" width="28" height="28" viewBox="0 0 28 28">
-          <path d="M14 21l-8.22899 4.3262 1.57159-9.1631L.685209 9.67376 9.8855 8.33688 14 0l4.1145 8.33688 9.2003 1.33688-6.6574 6.48934 1.5716 9.1631L14 21z"></path>
+        <svg
+          class="event__favorite-icon"
+          width="28"
+          height="28"
+          viewBox="0 0 28 28"
+        >
+          <path
+            d="M14 21l-8.22899 4.3262 1.57159-9.1631L.685209 9.67376 9.8855 8.33688 14 0l4.1145 8.33688 9.2003 1.33688-6.6574 6.48934 1.5716 9.1631L14 21z"
+          ></path>
         </svg>
       </button>
     `;
@@ -125,4 +164,3 @@ class CardView extends View {
 customElements.define('card-view', CardView);
 
 export default CardView;
-

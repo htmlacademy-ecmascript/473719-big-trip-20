@@ -1,5 +1,6 @@
-import {formatDate, formatDuration, formatTime} from '../utils.js';
-import Presenter from "./presenter.js";
+import { formatDate, formatDuration, formatTime } from '../utils.js';
+import CardView from '../views/card-view.js';
+import Presenter from './presenter.js';
 
 /**
  * @extends {Presenter<ListView>, AppModel}
@@ -20,7 +21,7 @@ class ListPresenter extends Presenter {
    * @param {Point} point
    * @return {PointViewState}
    */
-  createPointViewState(point, index) {
+  createPointViewState(point) {
     const offerGroups = this.model.getOfferGroups();
 
     const types = offerGroups.map((it) => ({
@@ -36,9 +37,13 @@ class ListPresenter extends Presenter {
     const group = offerGroups.find((it) => it.type === point.type);
     const offers = group.offers.map((it) => ({
       ...it,
-      isSelected: point.offerIds.includes(it.id)
+      isSelected: point.offerIds.includes(it.id),
     }));
 
+    /**
+     * @type {UrlParams}
+     */
+    const urlParams = this.getUrlParams();
     return {
       id: point.id,
       types,
@@ -52,8 +57,40 @@ class ListPresenter extends Presenter {
       basePrice: point.basePrice,
       offers,
       isFavorite: point.isFavorite,
-      isEditable: index === 2,
+      isEditable: point.id === urlParams.edit,
     };
+  }
+
+  /**
+   * @override
+   */
+
+  addEventListeners() {
+    /**
+     * @param {CustomEven & {target: CardView}} event
+     */
+    const handleViewOpen = (event) => {
+      /**
+       * @type {UrlParams}
+       */
+
+      const urlParams = this.getUrlParams();
+      urlParams.edit = event.target.state.id;
+      this.setUrlParams(urlParams);
+    };
+    this.view.addEventListener('open', handleViewOpen);
+
+    const handleViewClose = () => {
+      /**
+       * @type {UrlParams}
+       */
+
+      const urlParams = this.getUrlParams();
+      delete urlParams.edit;
+      this.setUrlParams(urlParams);
+    };
+
+    this.view.addEventListener('close', handleViewClose);
   }
 }
 
