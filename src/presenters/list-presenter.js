@@ -78,7 +78,6 @@ class ListPresenter extends Presenter {
       urlParams.edit = event.target.state.id;
       this.setUrlParams(urlParams);
     };
-    this.view.addEventListener('open', handleViewOpen);
 
     const handleViewClose = () => {
       /**
@@ -90,7 +89,27 @@ class ListPresenter extends Presenter {
       this.setUrlParams(urlParams);
     };
 
+    /**
+     * @param {CustomEven & {target: CardView}} event
+     */
+    const handleViewFavorite = (event) => {
+      this.togglePointIsFavorite(event.target);
+    };
+
     this.view.addEventListener('close', handleViewClose);
+    this.view.addEventListener('open', handleViewOpen);
+    this.view.addEventListener('favorite', handleViewFavorite);
+  }
+
+  /**
+   *
+   * @param {CardView} card
+   */
+
+  togglePointIsFavorite (card) {
+    const point = card.state;
+    point.isFavorite = !point.isFavorite;
+    card.render();
   }
 }
 
