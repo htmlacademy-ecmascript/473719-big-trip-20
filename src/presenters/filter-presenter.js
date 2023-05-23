@@ -17,7 +17,7 @@ class FilterPresenter extends Presenter {
     const items = types.map((it) => ({
       value: it,
       isSelected: (it === 'everything'),
-      isDisabled: false
+      isDisabled: false,
     }));
 
     return {items};

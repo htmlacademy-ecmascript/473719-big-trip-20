@@ -29,7 +29,7 @@
  */
 
 /**
- * @typedef {'everything' | 'future' | 'present' | 'past'} FilterType
+ * @typedef {'everything' | 'future' | 'present' | 'past'}
  */
 
 /**
@@ -85,6 +85,7 @@
 /**
  * @typedef UrlParams
  * @prop {string} [edit]
+ * @prop {SortType} [sort]
  *
  *
  */

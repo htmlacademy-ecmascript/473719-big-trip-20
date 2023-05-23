@@ -1,6 +1,6 @@
-import { formatDate, formatDuration, formatTime } from '../utils.js';
-import CardView from '../views/card-view.js';
-import Presenter from './presenter.js';
+import { formatDate, formatDuration, formatTime } from "../utils.js";
+import CardView from "../views/card-view.js";
+import Presenter from "./presenter.js";
 
 /**
  * @extends {Presenter<ListView>, AppModel}
@@ -11,7 +11,12 @@ class ListPresenter extends Presenter {
    * @return {ListViewState}
    */
   createViewState() {
-    const points = this.model.getPoints();
+    /**
+     * @type {UrlParams}
+     */
+
+    const urlParams = this.getUrlParams();
+    const points = this.model.getPoints(urlParams);
     const items = points.map(this.createPointViewState, this);
     return { items };
   }
@@ -44,6 +49,7 @@ class ListPresenter extends Presenter {
      * @type {UrlParams}
      */
     const urlParams = this.getUrlParams();
+
     return {
       id: point.id,
       types,
@@ -67,8 +73,9 @@ class ListPresenter extends Presenter {
 
   addEventListeners() {
     /**
-     * @param {CustomEven & {target: CardView}} event
+     * @param {CustomEvent & {target: CardView}} event
      */
+
     const handleViewOpen = (event) => {
       /**
        * @type {UrlParams}
@@ -96,9 +103,9 @@ class ListPresenter extends Presenter {
       this.togglePointIsFavorite(event.target);
     };
 
-    this.view.addEventListener('close', handleViewClose);
-    this.view.addEventListener('open', handleViewOpen);
-    this.view.addEventListener('favorite', handleViewFavorite);
+    this.view.addEventListener("close", handleViewClose);
+    this.view.addEventListener("open", handleViewOpen);
+    this.view.addEventListener("favorite", handleViewFavorite);
   }
 
   /**
@@ -106,7 +113,7 @@ class ListPresenter extends Presenter {
    * @param {CardView} card
    */
 
-  togglePointIsFavorite (card) {
+  togglePointIsFavorite(card) {
     const point = card.state;
     point.isFavorite = !point.isFavorite;
     card.render();

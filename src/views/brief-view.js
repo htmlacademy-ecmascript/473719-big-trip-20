@@ -1,5 +1,5 @@
-import View from "./view.js";
-import { html } from "../utils.js";
+import View from './view.js';
+import { html } from '../utils.js';
 
 /**
  * @extends {View <BriefViewState>}
@@ -9,7 +9,7 @@ class BriefView extends View {
   constructor() {
     super();
 
-    this.classList.add("trip-info");
+    this.classList.add('trip-info');
   }
 
   /**
@@ -32,6 +32,6 @@ class BriefView extends View {
   }
 }
 
-customElements.define("brief-view", BriefView);
+customElements.define('brief-view', BriefView);
 
 export default BriefView;

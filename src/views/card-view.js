@@ -31,10 +31,14 @@ class CardView extends View {
   createHtml() {
     return html`
       <div class="event">
-        ${this.createStartDateHtml()} ${this.createIconHtml()}
-        ${this.createDestinationHtml()} ${this.createScheduleHtml()}
-        ${this.createPriceHtml()} ${this.createOffersHtml()}
-        ${this.createStarButtonHtml()} ${this.createRollupButtonHtml()}
+        ${this.createStartDateHtml()}
+        ${this.createIconHtml()}
+        ${this.createDestinationHtml()}
+        ${this.createScheduleHtml()}
+        ${this.createPriceHtml()}
+        ${this.createOffersHtml()}
+        ${this.createStarButtonHtml()}
+        ${this.createRollupButtonHtml()}
       </div>
     `;
   }
