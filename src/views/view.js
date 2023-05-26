@@ -3,6 +3,8 @@
  * @template s
  */
 
+import { SafeHtml } from "../utils";
+
 class View extends HTMLElement {
   constructor() {
     super();
@@ -13,8 +15,17 @@ class View extends HTMLElement {
     this.state = null;
   }
 
-  render() {
-    this.innerHTML = String(this.createHtml());
+  /**
+   *
+   * @param {string} [selector]
+   * @param {SafeHtml} [outerHtml]
+   */
+  render(selector, outerHtml) {
+    if (arguments.length === 2) {
+      this.querySelector(selector).outerHTML = String(outerHtml);
+    } else {
+      this.innerHTML = String(this.createHtml());
+    }
   }
 
   /**
