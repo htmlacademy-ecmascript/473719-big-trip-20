@@ -1,6 +1,5 @@
-import { formatDate, formatDuration, formatTime } from "../utils.js";
-import CardView from "../views/card-view.js";
-import Presenter from "./presenter.js";
+import { formatDate, formatDuration, formatTime } from '../utils.js';
+import Presenter from './presenter.js';
 
 /**
  * @extends {Presenter<ListView>, AppModel}
@@ -72,10 +71,10 @@ class ListPresenter extends Presenter {
    */
 
   addEventListeners() {
-    this.view.addEventListener("close", this.handleViewClose.bind(this));
-    this.view.addEventListener("open", this.handleViewOpen.bind(this));
-    this.view.addEventListener("favorite", this.handleViewFavorite.bind(this));
-    this.view.addEventListener("edit", this.handleViewEdit.bind(this));
+    this.view.addEventListener('close', this.handleViewClose.bind(this));
+    this.view.addEventListener('open', this.handleViewOpen.bind(this));
+    this.view.addEventListener('favorite', this.handleViewFavorite.bind(this));
+    this.view.addEventListener('edit', this.handleViewEdit.bind(this));
   }
 
   /**
@@ -119,11 +118,9 @@ class ListPresenter extends Presenter {
     const editor = event.target;
     const field = event.detail;
     const point = editor.state;
-    console.log(field.name);
-    console.log(field.value);
 
     switch (field.name) {
-      case "event-destination": {
+      case 'event-destination': {
         const name = field.value.trim();
 
         point.destinations.forEach((it) => {
@@ -132,21 +129,22 @@ class ListPresenter extends Presenter {
         editor.renderDestination();
         break;
       }
-      case "event-start-time": {
+      case 'event-start-time': {
         break;
       }
 
-      case "event-end-time": {
+      case 'event-end-time': {
         break;
       }
 
-      case "event-price": {
+      case 'event-price': {
         break;
       }
 
-      case "event-type": {
+      case 'event-type': {
         const offerGroups = this.model.getOfferGroups();
         const { offers } = offerGroups.find((it) => it.type === field.value);
+
         point.offers = offers;
         point.types.forEach((it) => {
           it.isSelected = it.value === field.value;

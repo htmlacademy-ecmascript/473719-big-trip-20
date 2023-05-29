@@ -121,14 +121,14 @@ class CardView extends View {
       <h4 class="visually-hidden">Offers:</h4>
       <ul class="event__selected-offers">
         ${offers.map(
-          (it) => html`
+    (it) => html`
             <li class="event__offer">
               <span class="event__offer-title">${it.title}</span>
               +€&nbsp;
               <span class="event__offer-price">${it.price}</span>
             </li>
           `
-        )}
+  )}
       </ul>
     `;
   }
@@ -139,8 +139,8 @@ class CardView extends View {
     return html`
       <button
         class="event__favorite-btn ${point.isFavorite
-          ? 'event__favorite-btn--active'
-          : ''}"
+    ? 'event__favorite-btn--active'
+    : ''}"
         type="button"
       >
         <span class="visually-hidden">Add to favorite</span>

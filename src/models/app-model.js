@@ -1,7 +1,7 @@
-import Model from "./basic-model";
-import destinations from "../data/destinations.json";
-import offerGroups from "../data/offers.json";
-import points from "../data/points.json";
+import Model from './basic-model';
+import destinations from '../data/destinations.json';
+import offerGroups from '../data/offers.json';
+import points from '../data/points.json';
 
 class AppModel extends Model {
   #points = points;
@@ -15,7 +15,8 @@ class AppModel extends Model {
   #sortCallbackMap = {
     day: (a, b) => Date.parse(a.startDateTime) - Date.parse(b.startDateTime),
     event: () => 0,
-    time: (a, b) => AppModel.calcPointDuration(b) - AppModel.calcPointDuration(a),
+    time: (a, b) =>
+      AppModel.calcPointDuration(b) - AppModel.calcPointDuration(a),
     price: (a, b) => a.basePrice - b.basePrice,
     offers: () => 0,
   };

@@ -11,6 +11,10 @@
  */
 
 /**
+ * @typedef {import('flatpickr/dist/types/options.js').Options} FlatpickrOptions
+ */
+
+/**
  * @typedef {import('./models/app-model.js').default} AppModel
  * @typedef {import('./models/basic-model.js').default} BasicModel
  */

@@ -1,5 +1,5 @@
-import View from "./view.js";
-import CardView from "./card-view.js";
+import View from './view.js';
+import CardView from './card-view.js';
 import EditorView from './editor-view.js';
 
 /**
@@ -10,8 +10,8 @@ class ListView extends View {
   constructor() {
     super();
 
-    this.classList.add("trip-list");
-    this.setAttribute("role", "list");
+    this.classList.add('trip-list');
+    this.setAttribute('role', 'list');
   }
 
   /**
@@ -41,6 +41,6 @@ class ListView extends View {
   }
 }
 
-customElements.define("list-view", ListView);
+customElements.define('list-view', ListView);
 
 export default ListView;

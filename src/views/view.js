@@ -3,8 +3,6 @@
  * @template s
  */
 
-import { SafeHtml } from "../utils";
-
 class View extends HTMLElement {
   constructor() {
     super();

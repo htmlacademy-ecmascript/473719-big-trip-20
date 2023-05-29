@@ -12,7 +12,7 @@ class AddPresenter extends Presenter {
     // TODO: Make it dinamically
     return {
       isDisabled: false
-    }
+    };
   }
 }
 

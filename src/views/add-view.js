@@ -11,7 +11,7 @@ class AddView extends View {
    */
   createHtml() {
     return html`
-      <button ${this.state.isDisabled ? 'disabled': ''} class="trip-main__event-add-btn  btn  btn--big  btn--yellow" type="button">New event</button>
+      <button ${this.state.isDisabled ? 'disabled' : ''} class="trip-main__event-add-btn  btn  btn--big  btn--yellow" type="button">New event</button>
     `;
   }
 }
