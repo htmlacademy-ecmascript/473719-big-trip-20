@@ -1,5 +1,5 @@
 import View from './view.js';
-import {createDatePickers, html} from '../utils.js';
+import { createDatePickers, html } from '../utils.js';
 import './editor-view.css';
 
 /**
@@ -8,7 +8,6 @@ import './editor-view.css';
  */
 
 class EditorView extends View {
-
   /**
    *@type {ReturnType<createDatePickers>}
    */
@@ -18,6 +17,7 @@ class EditorView extends View {
     super();
     this.addEventListener('click', this.handleClick);
     this.addEventListener('input', this.handleInput);
+    this.addEventListener('submit', this.handleSubmit);
   }
 
   connectedCallback() {
@@ -53,6 +53,18 @@ class EditorView extends View {
 
   handleInput(event) {
     this.notify('edit', event.target);
+  }
+
+  /**
+   *
+   * @param {SubmitEvent} event
+   */
+  handleSubmit(event) {
+    const actByDefault = this.notify('save');
+
+    if (!actByDefault) {
+      event.preventDefault();
+    }
   }
 
   /**
@@ -114,7 +126,7 @@ class EditorView extends View {
           <fieldset class="event__type-group">
             <legend class="visually-hidden">Event type</legend>
             ${point.types.map(
-    (it) => html`
+              (it) => html`
                 <div class="event__type-item">
                   <input
                     id="event-type-${it.value}-1"
@@ -131,7 +143,7 @@ class EditorView extends View {
                   >
                 </div>
               `
-  )}
+            )}
           </fieldset>
         </div>
       </div>
@@ -149,7 +161,7 @@ class EditorView extends View {
           class="event__label  event__type-output"
           for="event-destination-1"
         >
-        ${type.value}
+          ${type.value}
         </label>
         <input
           class="event__input  event__input--destination"
@@ -161,8 +173,8 @@ class EditorView extends View {
         />
         <datalist id="destination-list-1">
           ${point.destinations.map(
-    (it) => html` <option value="${it.name}"></option> `
-  )}
+            (it) => html` <option value="${it.name}"></option> `
+          )}
         </datalist>
       </div>
     `;
@@ -246,13 +258,14 @@ class EditorView extends View {
         </h3>
         <div class="event__available-offers">
           ${point.offers.map(
-    (it) => html`
+            (it) => html`
               <div class="event__offer-selector">
                 <input
                   class="event__offer-checkbox  visually-hidden"
                   id="event-offer-${it.id}"
                   type="checkbox"
                   name="event-offer"
+                  value=${it.id}
                   ${it.isSelected ? 'checked' : ''}
                 />
                 <label class="event__offer-label" for="event-offer-${it.id}">
@@ -262,7 +275,7 @@ class EditorView extends View {
                 </label>
               </div>
             `
-  )}
+          )}
         </div>
       </section>
     `;
@@ -283,22 +296,22 @@ class EditorView extends View {
           ${destination?.description}
         </p>
         ${destination?.pictures.length
-    ? html`
+          ? html`
               <div class="event__photos-container">
                 <div class="event__photos-tape">
                   ${destination?.pictures.map(
-    (it) => html`
+                    (it) => html`
                       <img
                         class="event__photo"
                         src="${it.src}"
                         alt="${it.description}"
                       />
                     `
-  )}
+                  )}
                 </div>
               </div>
             `
-    : ''}
+          : ''}
       </section>
     `;
   }

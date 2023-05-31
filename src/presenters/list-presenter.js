@@ -67,6 +67,25 @@ class ListPresenter extends Presenter {
   }
 
   /**
+   *
+   * @param {PointViewState} point
+   * @return {Point}
+   */
+
+  serializePointViewState(point) {
+    return {
+      id: point.id,
+      type: point.types.find((it) => it.isSelected).value,
+      destinationId: point.destinations.find((it) => it.isSelected)?.id,
+      startDateTime: point.startDateTime,
+      endDateTime: point.endDateTime,
+      basePrice: point.basePrice,
+      offerIds: point.offers.filter((it) => it.isSelected).map((it)=> it.id),
+      isFavorite: point.isFavorite,
+    };
+  }
+
+  /**
    * @override
    */
 
@@ -75,6 +94,7 @@ class ListPresenter extends Presenter {
     this.view.addEventListener('open', this.handleViewOpen.bind(this));
     this.view.addEventListener('favorite', this.handleViewFavorite.bind(this));
     this.view.addEventListener('edit', this.handleViewEdit.bind(this));
+    this.view.addEventListener('save', this.handleViewSave.bind(this));
   }
 
   /**
@@ -107,12 +127,14 @@ class ListPresenter extends Presenter {
   handleViewFavorite(event) {
     const card = event.target;
     const point = card.state;
+
     point.isFavorite = !point.isFavorite;
+    this.model.updatePoint(this.serializePointViewState(point));
     card.render();
   }
 
   /**
-   * @param {CustomEvent<HTML InputElement> & {target: CardView}} event
+   * @param {CustomEvent<HTML InputElement> & {target: EditorView}} event
    */
   handleViewEdit(event) {
     const editor = event.target;
@@ -130,14 +152,17 @@ class ListPresenter extends Presenter {
         break;
       }
       case 'event-start-time': {
+        point.startDateTime = field.value;
         break;
       }
 
       case 'event-end-time': {
+        point.endDateTime = field.value;
         break;
       }
 
       case 'event-price': {
+        point.basePrice = Number(field.value);
         break;
       }
 
@@ -152,7 +177,26 @@ class ListPresenter extends Presenter {
         editor.render();
         break;
       }
+
+      case 'event-offer': {
+        const offer = point.offers.find((it) => it.id === field.value);
+
+        offer.isSelected = !offer.isSelected;
+        break;
+      }
     }
+  }
+
+  /**
+   * @param {CustomEvent & {target: CardView}} event
+   */
+  handleViewSave(event) {
+    const editor = event.target;
+    const point = editor.state;
+
+    event.preventDefault();
+    this.model.updatePoint(this.serializePointViewState(point));
+    this.handleViewClose();
   }
 }
 
