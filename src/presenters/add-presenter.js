@@ -4,14 +4,37 @@ import Presenter from './presenter.js';
  * @extends {Presenter<AddView>}
  */
 class AddPresenter extends Presenter {
+
+
+
+  /**
+   * @override
+   */
+  addEventListeners() {
+    this.view.addEventListener('click', this.handleViewClick.bind(this));
+  }
+
+  handleViewClick() {
+    /**
+     * @type {UrlParams}
+     */
+
+    const urlParams = {
+      edit: 'draft',
+    };
+
+    this.setUrlParams(urlParams);
+  }
+
   /**
    * @override
    * @return {AddViewState}
    */
   createViewState() {
-    // TODO: Make it dinamically
+    const urlParams = this.getUrlParams();
+
     return {
-      isDisabled: false
+      isDisabled: urlParams.edit === 'draft',
     };
   }
 }

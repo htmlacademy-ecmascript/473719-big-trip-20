@@ -18,6 +18,7 @@ class EditorView extends View {
     this.addEventListener('click', this.handleClick);
     this.addEventListener('input', this.handleInput);
     this.addEventListener('submit', this.handleSubmit);
+    this.addEventListener('reset', this.handleReset);
   }
 
   connectedCallback() {
@@ -53,6 +54,20 @@ class EditorView extends View {
 
   handleInput(event) {
     this.notify('edit', event.target);
+  }
+
+  /**
+   *
+   * @param {ResetEvent} event
+   */
+
+  handleReset (event) {
+    const point = this.state;
+    const actByDefault = this.notify(point.isDraft ? 'cancel' : 'delete');
+
+    if (!actByDefault) {
+      event.preventDefault();
+    }
   }
 
   /**
@@ -125,8 +140,7 @@ class EditorView extends View {
         <div class="event__type-list">
           <fieldset class="event__type-group">
             <legend class="visually-hidden">Event type</legend>
-            ${point.types.map(
-              (it) => html`
+            ${point.types.map((it) => html`
                 <div class="event__type-item">
                   <input
                     id="event-type-${it.value}-1"
@@ -142,8 +156,7 @@ class EditorView extends View {
                     >${it.value}</label
                   >
                 </div>
-              `
-            )}
+              `)}
           </fieldset>
         </div>
       </div>
@@ -172,9 +185,7 @@ class EditorView extends View {
           list="destination-list-1"
         />
         <datalist id="destination-list-1">
-          ${point.destinations.map(
-            (it) => html` <option value="${it.name}"></option> `
-          )}
+          ${point.destinations.map((it) => html` <option value="${it.name}"></option> `)}
         </datalist>
       </div>
     `;
@@ -232,13 +243,33 @@ class EditorView extends View {
     `;
   }
 
+  /**
+   * @return {SafeHtml}
+   */
+
   createResetButtonHtml() {
+    const point = this.state;
+    if (point.isDraft) {
+      return html`
+      <button class="event__reset-btn" type="reset">Cancel</button>
+    `;
+    }
     return html`
       <button class="event__reset-btn" type="reset">Delete</button>
     `;
   }
 
+  /**
+ * @return {SafeHtml}
+ */
+
+
   createCloseRollupButtonHtml() {
+    const point = this.state;
+    if (point.isDraft) {
+      return '';
+    }
+
     return html`
       <button class="event__rollup-btn" type="button">
         <span class="visually-hidden">Close event</span>
@@ -257,25 +288,23 @@ class EditorView extends View {
           Offers
         </h3>
         <div class="event__available-offers">
-          ${point.offers.map(
-            (it) => html`
-              <div class="event__offer-selector">
-                <input
-                  class="event__offer-checkbox  visually-hidden"
-                  id="event-offer-${it.id}"
-                  type="checkbox"
-                  name="event-offer"
-                  value=${it.id}
-                  ${it.isSelected ? 'checked' : ''}
-                />
-                <label class="event__offer-label" for="event-offer-${it.id}">
-                  <span class="event__offer-title">${it.title}</span>
-                  +€&nbsp;
-                  <span class="event__offer-price">${it.price}</span>
-                </label>
-              </div>
-            `
-          )}
+          ${point.offers.map((it) => html`
+            <div class="event__offer-selector">
+              <input
+                class="event__offer-checkbox  visually-hidden"
+                id="event-offer-${it.id}"
+                type="checkbox"
+                name="event-offer"
+                value=${it.id}
+                ${it.isSelected ? 'checked' : ''}
+              />
+              <label class="event__offer-label" for="event-offer-${it.id}">
+                <span class="event__offer-title">${it.title}</span>
+                +€&nbsp;
+                <span class="event__offer-price">${it.price}</span>
+              </label>
+            </div>
+          `)}
         </div>
       </section>
     `;
@@ -295,23 +324,19 @@ class EditorView extends View {
         <p class="event__destination-description">
           ${destination?.description}
         </p>
-        ${destination?.pictures.length
-          ? html`
-              <div class="event__photos-container">
-                <div class="event__photos-tape">
-                  ${destination?.pictures.map(
-                    (it) => html`
-                      <img
-                        class="event__photo"
-                        src="${it.src}"
-                        alt="${it.description}"
-                      />
-                    `
-                  )}
-                </div>
-              </div>
-            `
-          : ''}
+        ${destination?.pictures.length ? html`
+          <div class="event__photos-container">
+            <div class="event__photos-tape">
+              ${destination?.pictures.map((it) => html`
+                  <img
+                    class="event__photo"
+                    src="${it.src}"
+                    alt="${it.description}"
+                  />
+                `)}
+            </div>
+          </div>
+            ` : ''}
       </section>
     `;
   }

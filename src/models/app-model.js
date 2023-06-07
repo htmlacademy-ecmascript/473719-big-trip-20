@@ -1,12 +1,21 @@
 import Model from './basic-model';
-import destinations from '../data/destinations.json';
-import offerGroups from '../data/offers.json';
-import points from '../data/points.json';
 
 class AppModel extends Model {
-  #points = points;
-  #destinations = destinations;
-  #offerGroups = offerGroups;
+  /**
+   * @type {Array<PointInSnakeCase>}
+   */
+  #points;
+
+  /**
+   * @type {Array<Destination>}
+   */
+  #destinations;
+
+  /**
+   * @type {Array<OfferGroup>}
+   */
+  #offerGroups;
+  #apiService;
 
   /**
    * @type {Record<FilterType, (it: Point) => boolean>}
@@ -15,7 +24,8 @@ class AppModel extends Model {
   #filterCallbackMap = {
     everything: () => true,
     future: (it) => Date.parse(it.startDateTime) > Date.now(),
-    present: (it) => !this.#filterCallbackMap.past(it) && !this.#filterCallbackMap.future(it),
+    present: (it) =>
+      !this.#filterCallbackMap.past(it) && !this.#filterCallbackMap.future(it),
     past: (it) => Date.parse(it.endDateTime) < Date.now(),
   };
 
@@ -33,13 +43,48 @@ class AppModel extends Model {
   };
 
   /**
+   *
+   * @param {ApiService} apiService
+   */
+  constructor(apiService) {
+    super();
+    this.#apiService = apiService;
+  }
+
+  /**
+   * @return {Promise<void>}
+   */
+  async load() {
+    try {
+      const data = await Promise.all([
+        this.#apiService.getPoints(),
+        this.#apiService.getDestinations(),
+        this.#apiService.getOfferGroups(),
+      ]);
+
+      const [points, destinations, offerGroups] = data;
+      this.#points = points;
+      this.#destinations = destinations;
+      this.#offerGroups = offerGroups;
+
+      this.notify('load');
+
+    } catch(error) {
+      this.notify('error', error);
+      throw error;
+    };
+  }
+
+  /**
    * @param {{filter?: FilterType, sort ?: SortType}} criteria
    * @return {Array<Point>}
    */
 
   getPoints(criteria = {}) {
     const adaptedPoints = this.#points.map(AppModel.adaptPointForClient);
-    const filterCallback = this.#filterCallbackMap[criteria.filter] ?? this.#filterCallbackMap.everything;
+    const filterCallback =
+      this.#filterCallbackMap[criteria.filter] ??
+      this.#filterCallbackMap.everything;
     const sortCallback =
       this.#sortCallbackMap[criteria.sort] ?? this.#sortCallbackMap.day;
 
@@ -51,10 +96,31 @@ class AppModel extends Model {
    * @param {Point} point
    */
 
+  addPoint(point) {
+    const adaptedPoint = AppModel.adaptPointForServer(point);
+    adaptedPoint.id = crypto.randomUUID();
+    this.#points.push(adaptedPoint);
+  }
+
+  /**
+   *
+   * @param {Point} point
+   */
+
   updatePoint(point) {
     const adaptedPoint = AppModel.adaptPointForServer(point);
     const index = this.#points.findIndex((it) => it.id === point.id);
     this.#points.splice(index, 1, adaptedPoint);
+  }
+
+  /**
+   *
+   * @param {string} id
+   */
+
+  deletePoint(id) {
+    const index = this.#points.findIndex((it) => it.id === id);
+    this.#points.splice(index, 1);
   }
 
   /**
@@ -106,14 +172,14 @@ class AppModel extends Model {
    */
   static adaptPointForServer(point) {
     return {
-      'id': point.id,
-      'type': point.type,
-      'destination': point.destinationId,
-      'date_from': point.startDateTime,
-      'date_to': point.endDateTime,
-      'base_price': point.basePrice,
-      'offers': point.offerIds,
-      'is_favorite': point.isFavorite,
+      id: point.id,
+      type: point.type,
+      destination: point.destinationId,
+      date_from: point.startDateTime,
+      date_to: point.endDateTime,
+      base_price: point.basePrice,
+      offers: point.offerIds,
+      is_favorite: point.isFavorite,
     };
   }
 }

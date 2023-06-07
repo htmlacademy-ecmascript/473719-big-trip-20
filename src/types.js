@@ -15,6 +15,19 @@
  * @typedef {import('flatpickr/dist/types/options.js').Options} FlatpickrOptions
  */
 
+
+/**
+ * @typedef {import('./services/api-service.js').default} ApiService
+ * @typedef {import('./services/service.js').default} Service
+ */
+
+/**
+ * @typedef ServiceOptions
+ * @prop {string} baseUrl
+ * @prop {number} minResponseTime
+ * @prop {string} authorization
+ */
+
 /**
  * @typedef {import('./models/app-model.js').default} AppModel
  * @typedef {import('./models/basic-model.js').default} BasicModel
@@ -85,12 +98,13 @@
  * @prop {Array<Offer & {isSelected?: boolean}>} offers
  * @prop {boolean} isFavorite
  * @prop {boolean} isEditable
+ * @prop {boolean} isDraft
  */
 
 /**
  * @typedef PlaceholderViewState
  * @prop {string} text
- * @prop {boolean} isHidden
+ * @prop {boolean} [isHidden]
  */
 
 /**
