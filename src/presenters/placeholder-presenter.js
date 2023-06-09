@@ -46,7 +46,7 @@ class PlaceholderPresenter extends Presenter {
     if (this.modelError) {
       return {
         text: String(this.modelError),
-      }
+      };
     }
 
     return {

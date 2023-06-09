@@ -235,10 +235,17 @@ class EditorView extends View {
     `;
   }
 
+  /**
+   *
+   * @return {SafeHtml}
+   */
+
   createSubmitButtonHtml() {
+    const point = this.state;
+
     return html`
-      <button class="event__save-btn  btn  btn--blue" type="submit">
-        Save
+      <button ${point.isSaving ? 'disabled' : ''}  class="event__save-btn  btn  btn--blue" type="submit">
+        ${point.isSaving ? 'Saving...' : 'Save'}
       </button>
     `;
   }
@@ -249,13 +256,17 @@ class EditorView extends View {
 
   createResetButtonHtml() {
     const point = this.state;
+
     if (point.isDraft) {
       return html`
-      <button class="event__reset-btn" type="reset">Cancel</button>
+      <button class="event__reset-btn btn" type="reset">Cancel</button>
     `;
     }
+
     return html`
-      <button class="event__reset-btn" type="reset">Delete</button>
+      <button ${point.isDeleting ? 'disabled' : ''} class="event__reset-btn btn" type="reset">
+        ${point.isDeleting ? 'Deleting...' : 'Delete'}
+      </button>
     `;
   }
 
@@ -347,14 +358,23 @@ class EditorView extends View {
       '.event__field-group--destination',
       this.createDestinationHtml()
     );
-    this.render('event__section--offers', this.createOfferListHtml());
+    this.render('.event__section--offers', this.createOfferListHtml());
   }
+
+  renderSubmitButton() {
+    this.render('.event__save-btn', this.createSubmitButtonHtml());
+  }
+
 
   renderDestination() {
     this.render(
       '.event__section--destination',
       this.createDestinationSectionHtml()
     );
+  }
+
+  renderResetButton() {
+    this.render('.event__reset-btn', this.createResetButtonHtml());
   }
 }
 

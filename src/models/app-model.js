@@ -69,10 +69,10 @@ class AppModel extends Model {
 
       this.notify('load');
 
-    } catch(error) {
+    } catch (error) {
       this.notify('error', error);
       throw error;
-    };
+    }
   }
 
   /**
@@ -96,21 +96,37 @@ class AppModel extends Model {
    * @param {Point} point
    */
 
-  addPoint(point) {
-    const adaptedPoint = AppModel.adaptPointForServer(point);
-    adaptedPoint.id = crypto.randomUUID();
-    this.#points.push(adaptedPoint);
-  }
+  async addPoint(point) {
+    try {
+      this.notify('busy');
 
+      const adaptedPoint = AppModel.adaptPointForServer(point);
+      const addedPoint = await this.#apiService.addPoint(adaptedPoint);
+
+      this.#points.push(addedPoint);
+
+    } finally {
+      this.notify('idle');
+    }
+  }
   /**
    *
    * @param {Point} point
    */
 
-  updatePoint(point) {
-    const adaptedPoint = AppModel.adaptPointForServer(point);
-    const index = this.#points.findIndex((it) => it.id === point.id);
-    this.#points.splice(index, 1, adaptedPoint);
+  async updatePoint(point) {
+    try {
+      this.notify('busy');
+
+      const adaptedPoint = AppModel.adaptPointForServer(point);
+      const updatedPoint = await this.#apiService.updatePoint(adaptedPoint);
+      const index = this.#points.findIndex((it) => it.id === adaptedPoint.id);
+
+      this.#points.splice(index, 1, updatedPoint);
+
+    } finally {
+      this.notify('idle');
+    }
   }
 
   /**
@@ -118,9 +134,18 @@ class AppModel extends Model {
    * @param {string} id
    */
 
-  deletePoint(id) {
-    const index = this.#points.findIndex((it) => it.id === id);
-    this.#points.splice(index, 1);
+  async deletePoint(id) {
+    try {
+      this.notify('busy');
+
+      await this.#apiService.deletePoint(id);
+      const index = this.#points.findIndex((it) => it.id === id);
+
+      this.#points.splice(index, 1);
+
+    } finally {
+      this.notify('idle');
+    }
   }
 
   /**
@@ -175,11 +200,11 @@ class AppModel extends Model {
       id: point.id,
       type: point.type,
       destination: point.destinationId,
-      date_from: point.startDateTime,
-      date_to: point.endDateTime,
-      base_price: point.basePrice,
+      'date_from': point.startDateTime,
+      'date_to': point.endDateTime,
+      'base_price': point.basePrice,
       offers: point.offerIds,
-      is_favorite: point.isFavorite,
+      'is_favorite': point.isFavorite,
     };
   }
 }

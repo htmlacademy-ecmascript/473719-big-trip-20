@@ -10,12 +10,10 @@ class Model extends EventTarget {
    */
 
   notify(type, detail = null) {
-    const event = new CustomEvent(type, {detail});
+    const event = new CustomEvent(type, { detail });
 
     return this.dispatchEvent(event);
   }
 }
-
-
 
 export default Model;

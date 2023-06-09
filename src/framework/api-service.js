@@ -1,6 +1,3 @@
-/**
- * Класс для отправки запросов к серверу
- */
 export default class ApiService {
   /**
    * @param {string} endPoint Адрес сервера
