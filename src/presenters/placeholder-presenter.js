@@ -10,7 +10,7 @@ class PlaceholderPresenter extends Presenter {
   isModelLoaded;
 
   /**
-   * @type {error}
+   * @type {Error}
    */
 
   modelError;
@@ -39,7 +39,7 @@ class PlaceholderPresenter extends Presenter {
 
       return {
         text: this.textMap[urlParams.filter] ?? this.textMap.everything,
-        isHidden: points.length > 0,
+        isHidden: points.length > 0 || urlParams.edit === 'draft',
       };
     }
 
@@ -69,7 +69,7 @@ class PlaceholderPresenter extends Presenter {
 
   /**
    *
-   * @param {CustomEvent<error>} event
+   * @param {CustomEvent<Error>} event
    */
   handleModelError(event) {
     this.modelError = event.detail;

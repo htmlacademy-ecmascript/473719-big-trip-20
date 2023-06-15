@@ -2,7 +2,7 @@ import { formatDate, formatDuration, formatTime } from '../utils.js';
 import Presenter from './presenter.js';
 
 /**
- * @extends {Presenter<ListView>, AppModel}
+ * @extends {Presenter<ListView, AppModel>}
  */
 class ListPresenter extends Presenter {
   /**
@@ -13,27 +13,23 @@ class ListPresenter extends Presenter {
     /**
      * @type {UrlParams}
      */
-
     const urlParams = this.getUrlParams();
     const points = this.model.getPoints(urlParams);
     const items = points.map(this.createPointViewState, this);
 
     if (urlParams.edit === 'draft') {
-
       /**
        * @type {Partial<Point>}
-       * @return {Partial<PointViewState>}
        */
-
       const draftPoint = {
         type: 'taxi',
         offerIds: [],
         isFavorite: false,
       };
+
       items.unshift(this.createPointViewState(draftPoint));
     }
 
-    const {isEditable, isDraft} = items.at(0);
     return {items};
   }
 
@@ -44,7 +40,6 @@ class ListPresenter extends Presenter {
    */
   createPointViewState(point) {
     const offerGroups = this.model.getOfferGroups();
-
     const types = offerGroups.map((it) => ({
       value: it.type,
       isSelected: it.type === point.type,
@@ -160,7 +155,7 @@ class ListPresenter extends Presenter {
   }
 
   /**
-   * @param {CustomEvent<HTML InputElement> & {target: EditorView}} event
+   * @param {CustomEvent<HTMLInputElement> & {target: EditorView}} event
    */
   handleViewEdit(event) {
     const editor = event.target;

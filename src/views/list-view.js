@@ -1,6 +1,7 @@
 import View from './view.js';
 import CardView from './card-view.js';
 import EditorView from './editor-view.js';
+import './list-view.css';
 
 /**
  * @extends{View<ListViewState>}

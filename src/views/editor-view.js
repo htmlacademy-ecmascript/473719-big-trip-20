@@ -49,7 +49,7 @@ class EditorView extends View {
   }
 
   /**
-   * @param {InputEvent}} event
+   * @param {InputEvent} event
    */
 
   handleInput(event) {
@@ -61,9 +61,9 @@ class EditorView extends View {
    * @param {ResetEvent} event
    */
 
-  handleReset (event) {
+  handleReset(event) {
     const point = this.state;
-    const actByDefault = this.notify(point.isDraft ? 'cancel' : 'delete');
+    const actByDefault = this.notify(point.isDraft ? 'close' : 'delete');
 
     if (!actByDefault) {
       event.preventDefault();
@@ -74,6 +74,7 @@ class EditorView extends View {
    *
    * @param {SubmitEvent} event
    */
+
   handleSubmit(event) {
     const actByDefault = this.notify('save');
 

@@ -1,5 +1,5 @@
 import { escape as escapeHtml } from 'he';
-import dayjs from 'dayjs';
+import dayjs, {Dayjs} from 'dayjs';
 import durationPlugin from 'dayjs/plugin/duration.js';
 import flatpickr from 'flatpickr';
 import 'flatpickr/dist/flatpickr.css';
@@ -7,12 +7,33 @@ import 'flatpickr/dist/flatpickr.css';
 dayjs.extend(durationPlugin);
 
 /**
- * @param {string} dateTime
+ * @param {string | dayjs.Dayjs} dateTime
+ * @param {boolean} [narrow]
  * @return {string}
  */
 
-function formatDate(dateTime) {
-  return dayjs(dateTime).format('MMM D');
+function formatDate(dateTime, narrow = false) {
+  return dayjs(dateTime).format(narrow ? 'D' : 'MMM D');
+}
+
+/**
+ * @param {string} startDateTime
+ * @param {string} endDateTime
+ * @return {string}
+ */
+
+function formatDateRange(startDateTime, endDateTime) {
+  const start = dayjs(startDateTime);
+  const end = dayjs(endDateTime);
+
+  if (start.isSame(end, 'day')) {
+    return formatDate(start);
+  }
+
+  return [
+    formatDate(start),
+    formatDate(end, start.isSame(end, 'month'))
+  ].join(' — ');
 }
 
 /**
@@ -116,6 +137,7 @@ function getRandomArrayElement(array) {
 
 export {
   formatDate,
+  formatDateRange,
   formatDuration,
   formatTime,
   SafeHtml,

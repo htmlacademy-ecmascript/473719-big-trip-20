@@ -18,8 +18,8 @@
 
 
 /**
- * @typedef {import('./services/api-service.js').default} ApiService
- * @typedef {import('./services/service.js').default} Service
+ * @typedef {import('./services/api-services.js').default} ApiService
+ * @typedef {import('./services/services.js').default} Service
  */
 
 /**
@@ -39,7 +39,7 @@
  * @typedef BriefViewState
  * @prop {string} places
  * @prop {string} dates
- * @prop {string} cost
+ * @prop {number} cost
  */
 
 /**
@@ -65,6 +65,10 @@
 
 /**
  * @typedef {'day' | 'event' | 'time' | 'price' | 'offers'} SortType
+ */
+
+/**
+ * @typedef {'everything' | 'future' | 'present' | 'past'} FilterType
  */
 
 /**
@@ -120,8 +124,6 @@
  * @prop {string} [edit]
  * @prop {FilterType} [filter]
  * @prop {SortType} [sort]
- *
- *
  */
 
 /**
