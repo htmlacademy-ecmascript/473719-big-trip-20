@@ -1,5 +1,5 @@
 import { escape as escapeHtml } from 'he';
-import dayjs, {Dayjs} from 'dayjs';
+import dayjs from 'dayjs';
 import durationPlugin from 'dayjs/plugin/duration.js';
 import flatpickr from 'flatpickr';
 import 'flatpickr/dist/flatpickr.css';

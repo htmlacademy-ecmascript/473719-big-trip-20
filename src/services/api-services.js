@@ -55,7 +55,7 @@ class ApiService extends Service {
    * @return {Promise<void>}
    */
   async deletePoint(id) {
-    const response = await this.request(`points/${id}`, {
+    await this.request(`points/${id}`, {
       method: 'DELETE'
     });
   }
