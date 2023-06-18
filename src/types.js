@@ -31,7 +31,7 @@
 
 /**
  * @typedef {import('./models/app-model.js').default} AppModel
- * @typedef {import('./models/basic-model.js').default} BasicModel
+ * @typedef {import('./models/model.js').default} BasicModel
  */
 
 

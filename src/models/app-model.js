@@ -1,4 +1,4 @@
-import Model from './basic-model';
+import Model from './model';
 
 class AppModel extends Model {
   /**
@@ -38,7 +38,7 @@ class AppModel extends Model {
     event: () => 0,
     time: (a, b) =>
       AppModel.calcPointDuration(b) - AppModel.calcPointDuration(a),
-    price: (a, b) => a.basePrice - b.basePrice,
+    price: (a, b) => b.basePrice - a.basePrice,
     offers: () => 0,
   };
 
