@@ -1,8 +1,8 @@
 import View from './view.js';
-import { html } from '../utils.js';
+import { html } from '../safe-html.js';
 
 /**
- * @extends {View <BriefViewState>}
+ * @extends {View<BriefViewState>}
  */
 
 class BriefView extends View {

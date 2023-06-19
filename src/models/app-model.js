@@ -30,7 +30,7 @@ class AppModel extends Model {
   };
 
   /**
-   * @type {Record<SotType, (a : Point, b: Point) => number>}
+   * @type {Record<SortType, (a : Point, b: Point) => number>}
    */
 
   #sortCallbackMap = {

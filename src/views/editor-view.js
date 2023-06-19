@@ -1,5 +1,6 @@
 import View from './view.js';
-import { createDatePickers, html } from '../utils.js';
+import { createDatePickers } from '../utils.js';
+import { html } from '../safe-html.js';
 import './editor-view.css';
 
 /**
